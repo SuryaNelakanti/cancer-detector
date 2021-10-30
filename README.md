@@ -2,6 +2,6 @@
 
 Folder Structure:
 
--model
- |-simpmodel.h5
--app.py
+-model<br>
+ |-simpmodel.h5<br>
+-app.py<br>
