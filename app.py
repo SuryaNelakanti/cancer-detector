@@ -18,10 +18,10 @@ import numpy as np
 
 st.markdown("<h1 style='text-align: center; color: White;background-color:teal'>CMR Project</h1>", unsafe_allow_html=True)
 st.markdown("<h3 style='text-align: center; color: teal;'>Drop in the video below</h3>", unsafe_allow_html=True)
-st.sidebar.header("What is this Project about?")
-st.sidebar.text("Lorem Ipsum Text.")
-st.sidebar.header("What tools where used to make this?")
-st.sidebar.text("Lorem Ipsum Text.")
+# st.sidebar.header("What is this Project about?")
+# st.sidebar.text("Lorem Ipsum Text.")
+# st.sidebar.header("What tools where used to make this?")
+# st.sidebar.text("Lorem Ipsum Text.")
 f = st.file_uploader("Upload file")
 tfile = tempfile.NamedTemporaryFile(delete=False) 
 if f is not None:
@@ -30,6 +30,7 @@ if f is not None:
 
 vf = cv.VideoCapture(tfile.name)
 
+
 if(os.path.exists("abnormal.avi")):
         os.remove("abnormal.avi")
 if(os.path.exists("normal.avi")):
@@ -37,6 +38,7 @@ if(os.path.exists("normal.avi")):
 
 stframe = st.empty()
 ret, frame = vf.read()
+
 if st.button('Predict'):
 # if frame is read correctly ret is True
     #vf = cv.VideoCapture('cancer.avi')
@@ -65,7 +67,9 @@ if st.button('Predict'):
         tf.keras.layers.Dense(128, activation=tf.nn.relu),
         tf.keras.layers.Dense(3, activation=tf.nn.softmax)
     ])
+    #Change location/name of the model below
     simpmodel.load_weights("model/simpmodel.h5")
+
     output1 = 'normal.avi'
     output2 = 'abnormal.avi'
     # codec ='avc1'
