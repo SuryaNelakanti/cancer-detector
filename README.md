@@ -3,5 +3,5 @@
 Folder Structure:
 
 -model<br>
- |-simpmodel.h5<br>
+     |-simpmodel.h5<br>
 -app.py<br>
