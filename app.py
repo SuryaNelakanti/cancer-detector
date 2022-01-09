@@ -29,19 +29,17 @@ if f is not None:
 
 
 vf = cv.VideoCapture(tfile.name)
-
-
-if(os.path.exists("abnormal.avi")):
-        os.remove("abnormal.avi")
-if(os.path.exists("normal.avi")):
-    os.remove("normal.avi")
-
 stframe = st.empty()
 ret, frame = vf.read()
 
 def predict():
     # if frame is read correctly ret is True
     #vf = cv.VideoCapture('cancer.avi')
+    if(os.path.exists("abnormal.avi")):
+        os.remove("abnormal.avi")
+    if(os.path.exists("normal.avi")):
+        os.remove("normal.avi")
+
     class_names = ['Abnormal', 'Normal', 'Uninformative']
     class_names_label = {class_name:i for i, class_name in enumerate(class_names)}
     nb_classes = len(class_names)
@@ -130,22 +128,26 @@ def predict():
     cv.destroyAllWindows()
     cv.waitKey(1)
     vf.release()
-    return
+    return True
 
 if st.button('Predict'):
     predict()
     
 
-if not ret:
+if st.button('View Output'):
     if(os.path.exists("normal.avi")):
         video_normal = open('normal.avi', 'rb')
         video_bytes_normal = video_normal.read()
         st.text('Normal:')
         st.video(video_bytes_normal)
+    else:
+        st.text('Nothing processed')
     if(os.path.exists("abnormal.avi")):
         video_abnormal = open('abnormal.avi', 'rb')
         video_bytes_abnormal = video_abnormal.read()
         st.text('Abnormal:')
         st.video(video_bytes_abnormal)
+    else:
+        st.text('Nothing processed')
     
 
