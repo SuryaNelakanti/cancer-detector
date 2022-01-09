@@ -39,8 +39,8 @@ if(os.path.exists("normal.avi")):
 stframe = st.empty()
 ret, frame = vf.read()
 
-if st.button('Predict'):
-# if frame is read correctly ret is True
+def predict():
+    # if frame is read correctly ret is True
     #vf = cv.VideoCapture('cancer.avi')
     class_names = ['Abnormal', 'Normal', 'Uninformative']
     class_names_label = {class_name:i for i, class_name in enumerate(class_names)}
@@ -112,6 +112,7 @@ if st.button('Predict'):
         # check if the writer is None
         else:
             break
+
             #writer2 = cv.VideoWriter(output2, fourcc, fps, (w , h) , True)
         
         if(pred_labels==1):
@@ -126,6 +127,15 @@ if st.button('Predict'):
             writer2.write(output2)
 
         curframe+=1
+    cv.destroyAllWindows()
+    cv.waitKey(1)
+    vf.release()
+    return
+
+if st.button('Predict'):
+    predict()
+    
+
 if not ret:
     if(os.path.exists("normal.avi")):
         video_normal = open('normal.avi', 'rb')
@@ -139,7 +149,3 @@ if not ret:
         st.video(video_bytes_abnormal)
     
 
-
-
-cv.destroyAllWindows()
-vf.release()
