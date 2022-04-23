@@ -32,7 +32,6 @@ vf = cv.VideoCapture(tfile.name)
 stframe = st.empty()
 ret, frame = vf.read()
 
-
 def predict():
     # if frame is read correctly ret is True
     #vf = cv.VideoCapture('cancer.avi')
