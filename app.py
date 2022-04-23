@@ -29,19 +29,18 @@ if f is not None:
 
 
 vf = cv.VideoCapture(tfile.name)
-
-
-if(os.path.exists("abnormal.avi")):
-        os.remove("abnormal.avi")
-if(os.path.exists("normal.avi")):
-    os.remove("normal.avi")
-
 stframe = st.empty()
 ret, frame = vf.read()
 
-if st.button('Predict'):
-# if frame is read correctly ret is True
+
+def predict():
+    # if frame is read correctly ret is True
     #vf = cv.VideoCapture('cancer.avi')
+    if(os.path.exists("abnormal.avi")):
+        os.remove("abnormal.avi")
+    if(os.path.exists("normal.avi")):
+        os.remove("normal.avi")
+
     class_names = ['Abnormal', 'Normal', 'Uninformative']
     class_names_label = {class_name:i for i, class_name in enumerate(class_names)}
     nb_classes = len(class_names)
@@ -112,6 +111,7 @@ if st.button('Predict'):
         # check if the writer is None
         else:
             break
+
             #writer2 = cv.VideoWriter(output2, fourcc, fps, (w , h) , True)
         
         if(pred_labels==1):
@@ -126,20 +126,35 @@ if st.button('Predict'):
             writer2.write(output2)
 
         curframe+=1
-if not ret:
-    if(os.path.exists("normal.avi")):
-        video_normal = open('normal.avi', 'rb')
-        video_bytes_normal = video_normal.read()
-        st.text('Normal:')
-        st.video(video_bytes_normal)
-    if(os.path.exists("abnormal.avi")):
-        video_abnormal = open('abnormal.avi', 'rb')
-        video_bytes_abnormal = video_abnormal.read()
-        st.text('Abnormal:')
-        st.video(video_bytes_abnormal)
+    cv.destroyAllWindows()
+    cv.waitKey(1)
+    vf.release()
+    global output_present 
+    output_present = True
+    return True
+
+def view_output():
+    if output_present:   
+        if(os.path.exists("normal.avi")):
+            video_normal = open('normal.avi', 'rb')
+            video_bytes_normal = video_normal.read()
+            st.text('Normal:')
+            st.video(video_bytes_normal)
+        else:
+            st.text('Nothing processed')
+        if(os.path.exists("abnormal.avi")):
+            video_abnormal = open('abnormal.avi', 'rb')
+            video_bytes_abnormal = video_abnormal.read()
+            st.text('Abnormal:')
+            st.video(video_bytes_abnormal)
+    else:
+        st.text('Nothing processed')
+
+
+
+if st.button('Predict'):
+    predict()
     
 
-
-
-cv.destroyAllWindows()
-vf.release()
+if st.button('View Output'):
+    view_output()
