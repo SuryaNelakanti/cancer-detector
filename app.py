@@ -1,20 +1,12 @@
 import numpy as np
 import os
 import imutils
-import time
-from sklearn.metrics import confusion_matrix
-import seaborn as sn; sn.set(font_scale=1.4)
-from sklearn.utils import shuffle           
-import matplotlib.pyplot as plt             
+import time          
 import tensorflow as tf                
-from tqdm import tqdm
 from keras import backend as K
 import streamlit as st
 import cv2 as cv
 import tempfile
-import pickle
-import string
-import numpy as np
 
 st.markdown("<h1 style='text-align: center; color: White;background-color:teal'>CMR Project</h1>", unsafe_allow_html=True)
 st.markdown("<h3 style='text-align: center; color: teal;'>Drop in the video below</h3>", unsafe_allow_html=True)
@@ -34,11 +26,11 @@ ret, frame = vf.read()
 
 def predict():
     # if frame is read correctly ret is True
-    #vf = cv.VideoCapture('cancer.avi')
-    if(os.path.exists("abnormal.avi")):
-        os.remove("abnormal.avi")
-    if(os.path.exists("normal.avi")):
-        os.remove("normal.avi")
+    #vf = cv.VideoCapture('cancer.mp4')
+    if(os.path.exists("abnormal.mp4")):
+        os.remove("abnormal.mp4")
+    if(os.path.exists("normal.mp4")):
+        os.remove("normal.mp4")
 
     class_names = ['Abnormal', 'Normal', 'Uninformative']
     class_names_label = {class_name:i for i, class_name in enumerate(class_names)}
@@ -68,10 +60,10 @@ def predict():
     #Change location/name of the model below
     simpmodel.load_weights("model/simpmodel.h5")
 
-    output1 = 'normal.avi'
-    output2 = 'abnormal.avi'
+    output1 = 'normal.mp4'
+    output2 = 'abnormal.mp4'
     # codec ='avc1'
-    codec='mp4v'
+    codec='H264'
 
     fps = int(vf.get(5))
     wi =int(vf.get(3) )  # float `width`
@@ -128,26 +120,21 @@ def predict():
     cv.destroyAllWindows()
     cv.waitKey(1)
     vf.release()
-    global output_present 
-    output_present = True
     return True
 
 def view_output():
-    if output_present:   
-        if(os.path.exists("normal.avi")):
-            video_normal = open('normal.avi', 'rb')
-            video_bytes_normal = video_normal.read()
-            st.text('Normal:')
-            st.video(video_bytes_normal)
-        else:
-            st.text('Nothing processed')
-        if(os.path.exists("abnormal.avi")):
-            video_abnormal = open('abnormal.avi', 'rb')
-            video_bytes_abnormal = video_abnormal.read()
-            st.text('Abnormal:')
-            st.video(video_bytes_abnormal)
+    if(os.path.exists("normal.mp4")):
+        video_normal = open('normal.mp4', 'rb')
+        video_bytes_normal = video_normal.read()
+        st.text('Normal:')
+        st.video(video_bytes_normal)
     else:
         st.text('Nothing processed')
+    if(os.path.exists("abnormal.mp4")):
+        video_abnormal = open('abnormal.mp4', 'rb')
+        video_bytes_abnormal = video_abnormal.read()
+        st.text('Abnormal:')
+        st.video(video_bytes_abnormal)
 
 
 
